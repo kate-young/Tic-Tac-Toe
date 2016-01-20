@@ -5,7 +5,7 @@ $(document).ready(function() {
             $(this).text("");
         });
     }
-
+    
     $(".box").on("click", function() {
         if($(this).text().length > 0) {
             return;
