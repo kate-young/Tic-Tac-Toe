@@ -10,26 +10,48 @@ var Board = function() {
     var columns = 3;
     var $board = $("#board");
     this.$rows = $(".row");
-    this.squares = new Array();
+    this.squares = new Map();
+    this.last_play;
     
     this.init = function() {
         for(var r = 0; r < rows; r++) {
             for(var c = 0; c < columns; c++) {
                var btn = $(this.$rows[r]).children()[c];
                var sqr = new Square(r, c, btn);
-               this.squares.push(sqr);
+               this.squares[[r, c]] = sqr;
             }
         }
+    }
+
+    this.getSquare = function(row, column) {
+        return this.squares[[row, column]];
+    }
+
+    this.play = function(row, column) {
+       var square = this.getSquare(row, column); 
+       if(this.last_play == null || this.last_play === "x") {
+          square.o();
+          this.last_play = "o";
+       } else {
+          square.x();
+       }
     }
 }
 
 var Square = function(row, column, btn) { 
     this.value = null;
-    this.$button = btn;  
+    this.$button = $(btn);  
 
-    var set = function(val) {
-        if(!value) {
+    this.set = function(val) {
+        if(!this.value) {
             this.value = val;
         }
+        this.$button.text(val);
+    }
+    this.x = function() {
+        this.set("X");
+    }
+    this.o = function() {
+        this.set("O");
     }
 }
