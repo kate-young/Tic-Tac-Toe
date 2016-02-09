@@ -3,6 +3,11 @@ var board;
 $(document).ready(function() {
     board = new Board();
     board.init();
+    $(".square").on("click", function() {
+        var row = $(this).parent().prevAll().length;
+        var column = $(this).prevAll().length;
+        board.play(row, column);
+    });
 });
 
 var Board = function() {
@@ -29,16 +34,19 @@ var Board = function() {
 
     this.play = function(row, column) {
        var square = this.getSquare(row, column); 
-       if(this.last_play == null || this.last_play === "x") {
+       if(this.last_play === "x") {
           square.o();
           this.last_play = "o";
        } else {
           square.x();
+          this.last_play = "x";
        }
     }
 }
 
 var Square = function(row, column, btn) { 
+    this.row = row;
+    this.column = column;
     this.value = null;
     this.$button = $(btn);  
 
@@ -53,5 +61,7 @@ var Square = function(row, column, btn) {
     }
     this.o = function() {
         this.set("O");
+    }
+    this.surrounding = function() { 
     }
 }
